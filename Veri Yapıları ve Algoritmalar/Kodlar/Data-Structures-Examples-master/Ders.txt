@@ -1,0 +1,13 @@
+Yığın:
+Overflow
+Underflow
+
+postfix
+
+Hanoi Tower Puzzle:
+    Amaç:
+        Diskleri en soldan en sağ clivepe götürmek
+
+    Kurallar:
+        1.Her tekrarda tek disk ile çalışılır.
+        2.Büyük disk küçük diskin üzerine gelemez.

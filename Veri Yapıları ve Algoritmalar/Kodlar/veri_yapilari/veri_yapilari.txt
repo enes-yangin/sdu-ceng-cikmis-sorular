@@ -1,0 +1,320 @@
+DÝZÝLER
+dizi: birbiri arasýnda lineer iliþki bulunan sýralý belleðe sahip elemanlardýr.
+ne zaman kullanýþlý?
+1. depolama eleman sayýsý sabitse
+2. arama, gezinti, sýralama
+pointer(iþaretçi): bir bellek yerine ait adresi tutan deðiþkendir. belleðe doðrudan eriþmek için kullanýlýr. bu adresin tipi genelde long veya int idir.
+çýkarma, çarpma ve bölme iþlemleri yapýlamaz, sadece toplama iþlemi yapýlabilir. toplama iþleminin korumasý vardýr. bellek deðeri aþýldýðýnda en üst deðere geri döner. pointer baþlangýç noktasýndaki adresi tutar. 
+arr = &arr[0] = 100
+& bir þeyin adresi demektir.
+
+pointer bir veri tipidir ve bu veri tipi baþka bir deðiþkeni iþaret eder.
+& operatörü bize bir veri tipinin bulunduðu alanýn adresini verir. & operatörü ile geri dönen verinin tipi pointer cinsindendir.
+
+int *ip;
+ip = arr; veya ip = &arr[0];
+arr[0] adresini tutar.
+
+ip+1 bir sonraki adresi gösterir.
+ip + 1 = &arr[1];  => 102
+ip + 2 = &arr[2];  => 104
+
+arr[2] => temel adres + (2 * sizeof int) = 100 + (2 * 2) = 104
+
+** = adresin adresindeki deðer
+
+
+BAÐLI LÝSTELER
+1.lineer yapýlardýr
+2.sürekli bellek yaklaþýmý yoktur
+
+baðlý listelere neden ihtiyaç var?
+1.uç limit yok
+2.dizide eleman eklemek pahalý
+id[] = {1000, 1010, 1050, 2000}
+={1000, 1050, 2000, 0}
+
+dezavantajlarý
+1.rastgele bellek eriþimi yok
+2.ekstra bellek ihtiyacý var
+3.cache dostu deðil
+
+baðlý liste nasýl oluþturulur
+struct node {
+	int data;
+	struct node *next;
+}
+
+ptr = (cast-type*)malloc(byte-size)
+ptr = (struct node*)malloc(sizeof(struct node))
+
+malloc:düðümün içindeki verilerin toplamý ne kadarsa o kadar yer ayýrýyor
+calloc:dizi boyutunda yer ayýrýyor
+free:hafýzadan ayýr
+realloc:yeniden yerleþtir 
+
+y = (int *)malloc(sizeof(int)*100)
+head kýsmý baþlangýç kýsmý, yani adresin baþlangýcý
+push fonksiyonunda & kullanýrken printfte kullanmadan gönderiyoruz
+
+#include <stdio.h>
+struct node {
+	int data;
+	struct node *next;
+}
+int main() {
+	struct node *dugum1, *dugum2, *dugum3;
+	dugum1=(struct node*)malloc(sizeof(struct node));
+	dugum2=(struct node*)malloc(sizeof(struct node));
+	dugum3=(struct node*)malloc(sizeof(struct node));
+	dugum1->data=15;
+	dugum2->data=20;
+	dugum3->data=25;
+	dugum1->next=dugum2;
+	dugum2->next=dugum3;
+	dugum3->next=NULL;
+}
+
+
+tüm elemanlar üzerinde gezmek için 
+struct node *ptr;
+ptr=dugum1;
+while(ptr!=NULL) {
+	printf("%d\n", ptr->data);
+}
+
+
+ÖDEV
+elimizde baðlý liste var:
+5 6 1 1 10 30 30 45 84 74 100 100
+iki ayný eleman var, bunlarý bulacak, elemanlarýn arka arkaya olmasý gerekiyor, örneðin 5 6 1 2 6 4 olmaz 
+iki tane ayný olan elemaný sayacak ve bunlarýn sayýsýnýn asal olup olmadýðýný bulup yazacak
+yukarýdaki örnekte 3 çift var, 3 asal mi? evet
+
+
+void insert(struct node* prev_node, int x){
+	if(prev_node==NULL)
+		return;
+	struct node* yeni=(struct node*)malloc(sizeof(struct node));
+	yeni->data=x;
+	yeni->next=prev_node->next;
+	prev_node->next=yeni;
+}
+int main(){
+..
+insert(ptr, 5);
+}
+	
+
+
+düðüm silme iþlemi
+1. silinecek düðümden öncekini bul
+2. önceki düðümün nextini deðiþtir
+3. free fonksiyonunu çaðýr
+
+sondan silme
+free(nexti NULL olan düðüm);
+prev->next=NULL;
+
+baþtan silme
+void bastanSilme(struct node** head_ref){
+	(*head_ref)=(*head_ref)->next;
+	free(*head_ref);
+}
+
+
+ters çevirme iþlemi(reverse)
+// & ile göndermeyi unutma
+void tersCevir(struct node** x) {
+	struct node *s, *q, *r;
+	q = *x;
+	r = NULL;
+	while (q != NULL) {
+		s = r;
+		r = q;
+		q = q->next;
+		r->next = s;
+	}
+	*x = r;
+}
+
+
+ÇEVRÝMSEL BAÐLI LÝSTE
+1. baðlý listede sondaki elemaný bul
+2. sondaki elemanýn nextini baþa baðla
+
+void cevrimseleCevir(struct node *head){
+	struct node *ptr=head;
+	while(ptr->next!=NULL){
+		ptr=ptr->next;
+	}
+	ptr->next=head;
+}
+
+
+void printCevrimsel(struct node *head){
+	struct node *ptr=head;
+	while(ptr->next!=head){
+		printf("%d", ptr->data);
+		ptr=ptr->next;
+	}
+	printf("%d", ptr->data);
+}
+
+
+//yukarýdakinin yerine bu da yazýlabilir
+printf("%d", ptr->data);
+ptr=ptr->next;
+while(ptr!=head){
+	printf("%d", ptr->data);
+	ptr=ptr->next;
+}
+
+
+çevrimsel baðlý listenin avantajlarý
+1.herhangi bir yeri baþlangýç noktasý olarak seçebiliriz
+2.kuyruk yapýsýný oluþturmak için 
+3.bilgisayarda çalýþan birden fazla iþlem varsa bunlarý çevrimsel baðlý listeye alarak iþlenmesini saðlar
+4.fibonacci serileri oluþturulurken çift yönlü çevrimsel baðlý liste kullanýlabilir
+
+
+//tek düðümün olduðu çevrimsel baðlý liste
+void bosaEkle( struct node *q, int x){
+	if(q!=NULL)
+		return;
+	q=(struct node*)malloc(sizeof(struct node));
+	q->data=x;
+	q->next=q;
+}
+
+//döndürmek istiyorsak fonksiyon struct node* tipinde olacak ve en sonda return q; diyeceðiz
+
+
+**çevrimsel baðlý listede baþa ekleme yaptýðýmýzda baþ deðiþmek zorunda deðil, çünkü zaten çevrimsel, baþ herhangi bir yerde olabilir
+
+void ekle(struct node *head, int x){
+	struct node *yeni=(struct node*)malloc(sizeof(struct node));
+	yeni->data=x;
+	if(head==NULL){
+		bosaEkle(yeni, 5);
+		return;
+	}
+	while(head->next==head)
+		head=head->next;
+	yeni->next=head->next;
+	head->next=yeni;
+}
+
+
+
+***ÇÝFT YÖNLÜ BAÐLI LÝSTE
+struct node{
+	int data;
+	struct node *next;
+	struct node *prev;
+};
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+struct node {
+	int data;
+	struct node *prev;
+	struct node *next;
+};
+
+void basaEkle(struct node **head, int x){
+	struct node *ptr = (struct node*)malloc(sizeof(struct node));
+	ptr->data=x;
+	ptr->prev=NULL;
+	ptr->next=(*head);
+	(*head)->prev=ptr;
+	(*head)=ptr;
+}
+
+void arayaEkle(struct node *head, int x, int y){
+	struct node *yeni= (struct node*)malloc(sizeof(struct node));
+	yeni->data=x;
+	struct node *ptr=head;
+	while(ptr!=NULL){
+		if(ptr->data==y)
+			break;
+		ptr=ptr->next;
+	}
+	if(ptr==NULL)
+		return;
+	yeni->next=ptr->next;
+	yeni->prev=ptr;
+	ptr->next->prev=yeni;
+	ptr->next=yeni;
+}
+
+int main(){
+	struct node *dugum1, *dugum2, *dugum3;
+	dugum1 = (struct node*)malloc(sizeof(struct node));
+	dugum2 = (struct node*)malloc(sizeof(struct node));
+	dugum3 = (struct node*)malloc(sizeof(struct node));
+	dugum1->data=1;
+	dugum2->data=2;
+	dugum3->data=3;
+	dugum1->prev=NULL;
+	dugum1->next=dugum2;
+	dugum2->prev=dugum1;
+	dugum2->next=dugum3;
+	dugum3->prev=dugum2;
+	dugum3->next=NULL;
+	
+	getch();
+	return 0;
+}
+
+
+// ne saçma bi kod bu
+struct node *createNode(){
+	struct node *dugum = (struct node*)malloc(sizeof(struct node));
+	return dugum;
+}
+
+
+
+// silme iþlemi
+void bastanSil(struct node **head){
+	struct node *ptr = (*head);
+	(*head)=ptr->next;
+	ptr->next->prev=NULL;
+	free(ptr);
+}
+
+
+
+// ÖDEV
+bir txt dosyamýz var
+her satýrda kelimeler var
+while döngüsü içerisinde her satýrý bir baðlý liste yap
+tek veya çift baðlý olacak
+satýrdaki kelime adedi tekse tek yönlü baðlý çiftse çift yönlü baðlý liste yapacak
+
+
+void cevir(struct node *head, struct node *tekBas){
+	struct node *ptr = head;
+	while(ptr!=NULL){
+		ekle(tekBas,ptr->data);
+		ptr = ptr->next;
+	}
+}
+
+void ekle(struct node *head, int x){
+	struct node *yeni= (struct node*)malloc(sizeof(struct node));
+	yeni->data = x;
+	struct node *ptr=head;
+	while(ptr->next!=NULL)
+		ptr = ptr->next;
+	ptr->next=yeni;
+	yeni->next=NULL;	
+}
+
+// main
+struct node *dugum4 = (struct node*)malloc(sizeof(struct node));
+dugum4->data=14; dugum4->next=NULL;
+cevir(dugum1, dugum4);
