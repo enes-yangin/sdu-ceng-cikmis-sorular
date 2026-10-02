@@ -1,0 +1,6 @@
+iPhone telefon için Sdü epostasını mail uygulamasına kaydetmek isteyen arkadaşlar için küçük bir rehber:
+
+Ayarlar-> uygulamalar -> mail -> hesaplar-> hesap ekle -> microsoft exchange (2. Sırada)
+
+Ardından mail adresinizi yazıp devam edin sonra çıkan ekrandan elle kurulum dedikten sonra bu ekran gelecek. Eposta ve kullanıcı adına okul epostanızı gireceksiniz
+(Sunucu ve alan yazan yeri ekrandaki gibi yazmanız lazım)
