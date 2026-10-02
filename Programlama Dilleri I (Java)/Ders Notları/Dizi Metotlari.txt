@@ -1,0 +1,9 @@
+Metot			Açıklama
+.clone()		Dizinin birebir kopyasını oluşturur.
+Arrays.sort()		Diziyi sıralar (tümünü ya da belirli aralığı).
+Arrays.binarySearch()	Sıralı dizide ikili arama yapar.
+Arrays.equals()		İki dizinin elemanlarını karşılaştırır.
+Arrays.copyOf()		Belirtilen uzunlukta kopya dizi üretir.
+Arrays.copyOfRange()	Belirli aralıktaki elemanları kopyalar.
+Arrays.fill()		Dizinin tüm elemanlarına aynı değeri atar.
+Arrays.toString()	Diziyi ekrana yazdırmak için string'e çevirir.
