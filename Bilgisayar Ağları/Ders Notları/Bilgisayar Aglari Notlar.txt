@@ -1,0 +1,50 @@
+UNICAST,
+MULTICAST -- özel cihaz  özel ip
+Broadcast PC kaynaklara direkt iletim -- MAC adresi 
+
+ethernet mimarisi 3 katmandan olusur:
+1-çekirdek katmanı(omurga) , en üst katman , özel cihazlar kullanılır - önemsiz
+2-dağıtım katmanı (router)
+3-erişim katmanı   
+
+apipa 169.255...
+
+soruların cevabıi 1) MAC ve IP , IP adresi olmadan paket gönderemezsiniz . mac yoksa zaten ethernete baglanamazsın(en temel gereklilik)
+2)hepsi
+3)hepsi
+4)hepsi
+
+hub çok kullanılan bir cihaz değil 
+ciscoda paket gonderme mektup(ping)  
+Adres çözümleme protokolü(ARP)
+YAYIN PAKETLERİ SADECE YEREL AGDA ÇALIŞIR 
+
+2.ders                         
+
+2960 switche baglı 3 pc 1 laptop 
+hub paket gönderiminde bütün cihazlara gönderir,switch sadece kaynak/hedefe gönderir
+
+192.168.1 kısmı ağ adresi .255 kısmı host adresi 
+
+farklı switchlerde 192.168.x kısmı farklı
+
+!!!!!2ağı birbirine bağlamak için router kullanılır , GATEWAY = ağlar arası iletişim yaptıgımız cihaz
+GATEWAY(ROUTER)A IP ADRESİ VERMEMİZ LAZIM , router gigabit 0/0/0 a ipv4 192.168.1.1(genelde) verilir , 0/0/1 e 192.168.2.1 verdik
+!!!! ayrıca routerda portları manuel olarak açmak gerek(statigi onlemek için) port status on tikle!!!!
+0/0/0 dakilere default gatewaye 192.168.1.1 (atadıgımız deger) ver
+böylece ağlar arası iletişim yapabiliyoruz
+
+IP ADRES SINIFLARI
+0.0.0.0 ve 0.7.0.0(localhost) özel adreslerdir aygıtlara verilemez
+  whatsapptaki tablo
+
+cihaz sayısı artınca Atanacak IP sayısı artar
+burada DHCP kullanıyoruz
+-server lazım -> IP ADRES ARALIGI
+-tümleşikcihaz  -> Subnet Mask
+ -router       -> Default Gateway
+              ->DNS ADRESLERI   tanımlı olmassı gerek
+DHCP keşif paketi nedir ?                        ---pc ip config DHCP seç!!!
+
+dhcp keşif -> dhcp teklif -> dhcp istek -> DHCP ONAYI
+

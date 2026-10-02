@@ -1,0 +1,10 @@
+12:04:42	 From Öğrenci 1 : hocam bu yayın broadcast mi oluyor
+12:07:09	 From Öğrenci 1 : anladım hoçam teşekkürler
+12:07:22	 From Öğrenci 2 : bu 3ü arasından ssadece broadcast mi yerel ağda kalıyor?
+12:10:01	 From Öğrenci 1 : yok hocam teşekkürler
+12:10:07	 From Öğrenci 3 : hocam slayt paylaşacak mısınız
+12:10:10	 From Öğrenci 4 : Teşekkürler hocam
+12:10:29	 From Öğrenci 3 : Teşekkürler hocam
+12:10:31	 From Öğrenci 5 : teşekkürler hocam
+12:10:35	 From Öğrenci 6 : görüşürüz hocam
+12:10:41	 From Öğrenci 1 : görüşürüz hocam

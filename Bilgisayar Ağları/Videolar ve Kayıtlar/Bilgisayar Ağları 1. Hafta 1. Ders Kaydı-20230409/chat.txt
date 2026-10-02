@@ -1,0 +1,9 @@
+11:14:48	 From Öğrenci 1 : evet iyi hocam
+11:14:51	 From Öğrenci 2 : iyi hocam ses
+11:14:52	 From Öğrenci 3 : evet hocam normal
+11:24:26	 From Öğrenci 4 : NTP
+11:38:54	 From Öğrenci 5 : ben de var hocam
+11:38:58	 From Öğrenci 6 : bende de
+11:39:05	 From Öğrenci 7 : Bende  de var
+11:39:09	 From Öğrenci 5 : ccna
+11:40:39	 From Öğrenci 5 : anlatıldı hocam evet
