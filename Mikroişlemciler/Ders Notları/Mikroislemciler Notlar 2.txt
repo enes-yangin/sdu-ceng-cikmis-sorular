@@ -1,0 +1,433 @@
+CONDITIONAL JUMP
+
+conditional jump'ların kullanımı:
+
+ a b'den çıkarıldığında;
+  
+  a b'ye eşit olduğunda sonuç 0 olur.
+
+  a<b olduğunda carry flag'i etkinleşir.
+
+örnek:
+
+ R20, R21'e eşitse R22 artsın.
+
+çözüm:
+
+  SUB R20, R21 ; R20=R21 ise zero flag'i etkinleşir.
+ 
+  BRNE NEXT ; eğer eşit değilse NEXT'e atla.
+
+  INC R22 ; R22'nin değerini 1 artır.
+
+ NEXT:
+
+###
+
+örnek 2:
+
+  R26<R24 ise R22 artsın.
+
+çözüm:
+
+  SUB R26, R24 ; eğer R26<R24 ise carry flag'i etkinleşir.
+
+  BRCC L1 ; carry flag'i etkinleşmemişse L1'e atla.
+
+  INC R22 ; R22'nin değerini 1 artır.
+
+ L1:
+
+###
+
+örnek 3:
+
+ R26>=R24 ise R22 artsın.
+
+çözüm:
+
+  SUB R26, R24 ; R26>=R24 ise carry flag'i etkinleşmez.
+
+  BRCS L1 ; eğer carry flag'i etkinleşirse L1'e atla.
+
+  INC R22 ; R22'nin değerini 1 artır.
+
+ L1:
+
+###
+
+örnek 4: if ve else
+
+ R17=5;
+
+ if (R20>R21)
+
+  R22++;
+
+ else
+
+  R22--;
+
+ R17++;
+
+çözüm:
+
+  LDI R17, 5
+  
+  SUB R21, R20
+
+  BRCS IF_LABEL
+
+  DEC R22
+
+  JMP NEXT
+
+ IF_LABEL:
+
+  INC R22
+
+ NEXT:
+  
+  INC R17
+
+###
+
+örnek 5: loop
+
+ ADD R30, R31 yapısını 9 kere çalıştır.
+
+çözüm:
+
+  .ORG 00
+
+  LDI R16, 9 ; R16=9 sayaç mantığı.
+
+ L1: ADD R30, R31
+
+  DEC R16 ; R16=R16-1 sayaç mantığı.
+
+  BRNE L1 ; eğer zero flag'i etkinleşmemişse L1'e atla.
+
+ L2: RJMP L2 ; burada sonsuza dek bekle
+
+###
+
+örnek 6: loop
+
+ 1+3+5+...+27 işlemini yap.
+
+çözüm:
+
+  LDI R20, 0 ; R20=0
+
+  LDI R16, 1 ; R16=1
+
+ L1: ADD R20, R16 ; R20=R20+R16
+
+  LDI R17, 2 ; R17=2
+
+  ADD R16, R17 ; R16=R16+R17
+
+  LDI R17, 27 ; R17=27
+
+  SUB R17, R16 ; R17=R17-R16
+
+  BRCC L1 ; eğer R16<=27 ise L1'e atla.
+
+###
+
+CALL TOPICS
+
+ stack, push ve pop
+
+ fonksiyon çağırma
+
+###
+
+stack, push ve pop kullanımı:
+
+ push: stack'e önündeki değeri push'layıp bir üst satıra geçer.
+
+ pop: stack'den önündeki değeri pop'layıp bir alt satıra geçer.
+
+ sph: yüksek değerlikli bit (sol taraf)
+
+ spl: düşük değerlikli bit (sağ taraf)
+
+###
+
+fonksiyon çağırma:
+
+ CALL komutu uygulandıktan sonra bir sonraki yapının adresi spl ve sph olmak üzere önce spl alta sonra sph üste gelecek şekilde push edilir.
+
+ sonra işlem sırası CALL tag'ının olduğu yere gelir.
+
+ daha sonra RET komutuyla bu push edilmiş değerler pop edilir, bu iki değer geri dönüş adresini oluşturur ve işlem sırası bu adrese gelir.
+
+###
+
+TIME DELAY
+
+ özetle her kodun kendine özel cycle'ı vardır.
+
+ RET 5 cycle; RCALL 4 cycle; BRCC, BRCS vb... 2 cycle.
+
+ toplam cycle sayısı hesabı programın içindeki kod öbeklerine göre değişir.
+
+ döngü içindeki kodlar "döngü sayısı x cycle" kadar işlenir ve böylelikle toplam cycle sayısı bulunur.
+
+###
+
+ADRESLEME MODLARI
+
+ single register adresleme modu
+
+ immediate adresleme modu
+
+ two-register adresleme modu
+
+ direct adresleme modu
+
+ I/O direct adresleme modu
+
+ register indirect adresleme modu
+
+single register adresleme modu: INC R19, | DEC R23 vb...
+
+ işlemcinin komutları yalnızca bir tek register'ı referans alır.
+
+immediate adresleme modu: LDI R19, 25 | SUBI R23, 5 vb...
+
+ işlem yapılacak veri doğrudan komut içinde belirtilir. 
+
+two-register adresleme modu: ADD R26, R23 vb...
+
+ işlem yapmak için iki farklı kayda (register) başvurulur.
+
+direct adresleme modu: LDS R19, 0x313 | STS 0x95, R19 vb...
+
+ komut içinde işlem yapılacak verinin bellekteki adresi doğrudan belirtilir.
+
+I/O direct adresleme modu: OUT 0x10, | R16 IN R19, 0x30
+
+ işlem yapılacak giriş/çıkış cihazının adresi komut içinde doğrudan belirtilir.
+
+register indirect adresleme modu: LD R24, X | LD R19, Y | LD R20, Z | ST X, R18 | ST Y, R20
+
+ bellekteki veriye erişmek için kullanılan adres, işlemcinin bir register'ında saklanır.
+
+ adres doğrudan belirtilmez. bunun yerine, adresin içinde kayıtlı olduğu referans bir harf (X, Y, Z) kullanılır.
+
+###
+
+INTERRUPT
+
+ mikroişlemcinin normal işlem akışını geçici olarak durdurup, bir dış olay ya da iç durum tarafından tetiklenen özel bir işlemi gerçekleştirmesine olanak tanır. bu olay, işlemciye kesme sinyali gönderildiğinde gerçekleşir.
+
+###
+
+EICRA ve EICRB, pull-up ve pull-down ve EIMSK
+
+EICRA ve EICRB: ISC
+
+ genellikle mikroişlemcinin dış olaylara (bir butona basma vb.) nasıl tepki vereceğini ayarlamak için kullanılır.
+
+ mikroişlemcinin dış kesmelere nasıl tepki vereceğini belirler. (kenar tetiklemesi veya düzey tetiklemesi.)
+
+###
+
+pull-up ve pull-down:
+
+ pull-up:
+
+  pull-up direnci kullanıldığında pin yüksek seviyeye (1) çekilir. yani, dış bir sinyal gelmediği sürece pin yüksek (1) olur.
+
+  interrupt tetikleme için pinin düşük (0) seviyeye inmesi gerekir yani düşen kenarlı tetikleme kullanılır.
+
+ pull-down:
+
+  pull-down direnci kullanıldığında pin düşük seviyeye (0) çekilir. yani, dış bir sinyal gelmediği sürece pin düşük (0) olur.
+
+  interrupt tetikleme için pinin düşük (0) seviyeye inmesi gerekir yani yükselen kenarlı tetikleme kullanılır.
+
+yükselen kenarlı tetikleme için:
+
+ ISC01 ISC00 <--- INT0
+   1     1
+
+ bitler yukarıdaki gibi ayarlanmalıdır.
+
+düşen kenarlı tetikleme için:
+
+ ISC11 ISC10 <--- INT1
+   1     0
+
+ bitler yukarıdaki gibi ayarlanmalıdır.
+
+###
+
+EIMSK: INT
+
+ belirli dış kesme pinlerine yönelik tetiklemeleri etkinleştirmek veya devre dışı bırakmak için kullanılır.
+
+ EIMSK kaydındaki bir bit 1 olduğunda, o pin'in kesme tetikleme işlemi aktif olur.
+
+ EIMSK kaydındaki bir bit 0 olduğunda, o pin'in kesmesi devre dışı bırakılır.
+
+###
+
+saving SREG
+
+ ISR'deki flag'leri değiştirdiğimizde SREG kaydı yapmalıyız çünkü interrupt işlemi yapıldıktan sonra SREG'teki I biti 1 olur.
+
+###
+
+TIMERS
+
+ TCRR0B
+
+ TCNT0
+
+ TIFR0
+
+TCRR0B: CS02 CS01 CS00
+
+ timer'ı kontrol eder:
+
+  hangi hızda çalışacağını belirler. (prescale)
+
+  timer'ı başlatır veya durdurur.
+
+  içeriğindeki CS02, CS01, CS00 ilgili bit düzenine göre prescaler ve clock source'ünü seçer.
+
+TCNT0:
+
+ sayaç olarak çalışır:
+
+  TCRR0B'deki ayarlara göre artar veya azalır.
+
+  anlık sayım değerini kayıt altına alır.
+
+TIFR0:
+
+ overflow durumunu bildirir:
+
+  TOV1, timer için bir overflow flag'dir.
+
+  TCNT0, 0xFF değerine ulaştığında TOV0 flag'i 0 olur.
+
+  bu durum bir interrupt ile algılanabilir ve gerekli bir işlem istenirse yapılabilir.
+
+###
+
+pals:
+
+ genellikle dijital devrelerde belirli bir zaman diliminde yüksek (1) veya düşük (0) olarak değişen sinyalleri ifade eder. hesaplamalar devir/saniye düzeyinde yapılmalıdır.
+
+örneğin her bir turda 4 pals varsa ve devir 1200 rpm yani dakikada 1200 devir ise:
+
+ 1200/60=20 devir/saniye, 4x20=80 pals/saniye
+
+prescaler:
+
+ bir saat sinyalinin bölünmesi işlemidir. yani bir saat sinyalinin frekansını düşürmek için kullanılan bir faktördür. bu sayede daha düşük hızda çalışan bir zamanlayıcı veya sayaç elde edilir.
+
+ örneğin prescaler "1:8" ise bu timer'ın her 8 pals'te 1 artacağı anlamına gelir. böylelikle:
+ 
+  80/8=10 artış/saniye
+
+ISR:
+
+ mikrodenetleyici veya mikroişlemcinin bir kesmeye cevap olarak çalıştırdığı özel bir fonksiyondur.
+
+not:
+
+ örneğin timer değeri her ISR'ye girildiğinde 6 yapılıyorsa bir sonraki sefer ISR'ye girmesi için 256-6=250 kez artması gerekir. bu değer bulunan artış değerine bölünür ve iki timer interrupt'ı arasında geçen süre hesaplanır.
+
+###
+
+WATCHDOG TIMER
+
+ uzaktan erişilmesi mümkün olmayan makinelerde veya sistemlerde, sistemin düzgün çalışmasını sağlamak için kullanılan bir donanım veya yazılım mekanizmasıdır.
+
+ sistemin belirli bir zaman aralığında beklenen bir yanıt verip vermediğini kontrol eder. eğer sistem WDT'yi belirli bir süre içinde resetlemezse, WDT bir hata durumunu algılar.
+
+ sistem bir yazılım veya donanım hatasına düştüyse, WDT sistemi yeniden başlatır ve normal çalışmaya geri döndürmeyi amaçlar ya da bazı durumlarda, WDT sistemi güvenli bir şekilde kesebilir.
+
+###
+
+ADC (ANALOG DİJİTAL DÖNÜŞTÜRÜCÜ)
+
+ analog sinyalleri dijital sinyallere dönüştürür.
+
+ 8-bit ise 0-255 arası,​
+
+ 10-bit ise 0-1023 arası,​
+
+ 12-bit ise 0-4095 arası değer verir.
+
+ aynı zamanda adc'ler referans voltajlarına sahiptir. bu referans voltajları adc'nin maksimum veya minimum ürettiği değerleri sağlayan voltaj değerleridir.
+
+adc çözünürlüğü:
+
+ (V_ref+)-(V_ref-)/2^N-1   (N = bit değeri)
+
+adc değeri:
+
+ (uygulanan voltaj-(V_ref-))/(V_ref+)-(V_ref-)
+
+mV ve sıcaklık ilişkisi:
+
+ eğer adc çözünürlüğü 2.5mV bulunursa adc'nin her 1 değer artışı için sıcaklık 1 derece artacaktır.
+
+###
+
+fetch ve execute:
+
+ fetch: 
+
+  işlemci, komutun adresine gidip komutu alır.
+
+ execute: 
+
+  işlemci, aldığı komutu işler.
+
+old architecture ve pipelining
+
+ old architecture:
+
+  her komut sırasıyla işlenir (fetch -> decode -> execute), her aşama bir önceki aşamanın tamamlanmasını bekler.
+
+ pipelining:
+
+  birden fazla komut, aynı anda farklı aşamalarda işlenir. bu, işlemcinin daha hızlı çalışmasını sağlar çünkü bir komutun farklı aşamaları paralel olarak işlenebilir.
+
+###
+
+ RISC:
+
+  RISC mimaride daha basit bir yapı boyutu vardır. (AVR'de yapılar 2 veya 4 bit'tir.)
+ 
+  daha az komut kullanılabilir bu da daha az transistör kullanımını sağlar. dezavantajı assembly programını zorlaştırması ve daha çok bellek kullanımıdır.
+
+  basit adresleme modları, lojik devrelerin karmaşıklığını azaltarak işlemcinin daha hızlı ve verimli çalışmasını sağlar. dezavantajı assembly programını zorlaştırmasıdır.
+
+  bellekle yapılan veri erişiminin sadece iki tür işlemle (load ve store) sınırlıdır.
+
+  opcode'lar ve operand'lar için veri yolları ayrılır. bu durumun dezavantajı daha maliyetli olmasıdır.
+
+  komutlar basit yapıda olduğu için çoğu 1 cycle'da işlenir.
+
+  en az 32 tane register'a sahiptir. bu durum bellek kullanımını azaltır.
+
+  
+
+  
+
+  
+
+ 
+
+
+
+ 
