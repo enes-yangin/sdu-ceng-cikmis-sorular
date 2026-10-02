@@ -1,0 +1,10 @@
+﻿# Paylaşılmaması gerekenler (sansürsüz orijinaller ve kişisel belgeler)
+/_Sansür Öncesi Orijinaller (paylaşmayın)/
+/_Kişisel (paylaşmayın)/
+/_Orijinal Arşivler/
+
+# GitHub boyut sınırı (100 MB/dosya): video, ses kayıtları ve büyük kitap
+*.mp4
+*.mkv
+*.m4a
+/Elektrik Devre Temelleri/Ders Notları/Temel Muhendislik Devre Analizi (Irwin) Kitap.pdf
