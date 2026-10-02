@@ -1,0 +1,59 @@
+[System]
+Name='bm_MeslekSecimi'
+Type='mamdani'
+Version=2.0
+NumInputs=2
+NumOutputs=1
+NumRules=15
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='SosyalBilimler'
+Range=[0 100]
+NumMFs=5
+MF1='CokDusuk':'trimf',[0 0 34]
+MF2='Yuksek':'trimf',[50 66 82]
+MF3='CokYuksek':'trimf',[66 100 100]
+MF4='Dusuk':'trimf',[18 34 50]
+MF5='Orta':'trapmf',[34 45 55 66]
+
+[Input2]
+Name='FenBilimleri'
+Range=[0 100]
+NumMFs=5
+MF1='CokDusuk':'trimf',[0 0 34]
+MF2='Orta':'trapmf',[34 45 55 66]
+MF3='CokYuksek':'trimf',[66 100 100]
+MF4='Dusuk':'trimf',[18 34 50]
+MF5='Yuksek':'trimf',[50 66 82]
+
+[Output1]
+Name='Meslek'
+Range=[0 100]
+NumMFs=5
+MF1='Serbest':'trapmf',[0 0 5 10]
+MF2='Kamu':'trapmf',[5 10 30 35]
+MF3='Egitim':'trapmf',[30 35 55 70]
+MF4='Muhendislik':'trapmf',[55 60 80 85]
+MF5='Týp':'trapmf',[60 85 100 100]
+
+[Rules]
+1 2, 2 (1) : 1
+2 5, 4 (1) : 1
+5 3, 4 (1) : 1
+2 5, 3 (1) : 1
+2 4, 2 (1) : 1
+4 4, 1 (1) : 1
+5 4, 2 (1) : 1
+4 5, 4 (1) : 1
+3 3, 5 (1) : 1
+5 2, 3 (1) : 2
+1 1, 1 (1) : 2
+2 1, 1 (1) : 2
+3 1, 3 (1) : 2
+5 3, 5 (1) : 1
+2 3, 5 (1) : 1
